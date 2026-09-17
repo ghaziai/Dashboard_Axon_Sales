@@ -1,6 +1,6 @@
 # Fitur: Manajemen Pesanan
 
-- **Pemilik:** Kontributor 3
+- **Pemilik:** Ilham Widi Mahendra
 - **Status:** Belum diimplementasikan (tahap fondasi)
 
 ## Cakupan

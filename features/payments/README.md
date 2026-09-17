@@ -1,9 +1,6 @@
 # Fitur: Pembayaran
 
-- **Pemilik:** DIUSULKAN → Kontributor 3 (pasangan alami untuk `features/orders/`
-karena status pembayaran berkaitan langsung dengan pemenuhan pesanan). **Belum
-dikonfirmasi dengan tim** — fitur ini tidak termasuk dalam pembagian
-dasar awal dan memerlukan persetujuan eksplisit sebelum pengerjaan dimulai.
+- **Pemilik:** Ilham Widi Mahendra
 - **Status:** Belum diimplementasikan (tahap fondasi)
 
 ## Cakupan

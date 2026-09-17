@@ -51,13 +51,6 @@ file bersama (`app/layout.tsx`, `package.json`, `next.config.ts`,
 `tsconfig.json`, `supabase/`, `.github/workflows/`) melalui perubahan
 yang terkoordinasi (lihat `README_Dev.md`).
 
-Lihat `README.md` di setiap folder `features/<name>/` untuk cakupan dan
-penanggung jawab saat ini. Penanggung jawab untuk `features/payments`,
-`features/employees`, dan `features/offices` telah diusulkan namun
-**belum dikonfirmasi** dengan tim — pembagian awal untuk tiga kontributor
-hanya mencakup dashboard/DevOps (Kontributor 1), pelanggan (Kontributor 2),
-serta produk & pesanan (Kontributor 3) secara eksplisit.
-
 ## Model data
 *Tertunda.* Database belum diperiksa dalam proyek ini (lihat
 `sql/source/` untuk *dump* MySQL `classicmodels` mentah). Pemeriksaan skema,

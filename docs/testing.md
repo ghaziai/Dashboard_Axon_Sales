@@ -18,7 +18,4 @@ yang diverifikasi melalui pengujian integrasi setelah fitur tersebut tersedia.
 
 ## Waktu penambahan pengujian
 *Test runner* konkret (misalnya Vitest/Jest untuk pengujian unit/integrasi) akan
-dipilih dan didokumentasikan di sini serta di `README_Ghazi.md`, lalu
-diintegrasikan ke dalam `.github/workflows/ci.yml` saat fitur pertama siap —
-bukan sebelumnya, guna menghindari keberadaan *framework* pengujian yang tidak terpakai
-atau belum dikonfigurasi sepenuhnya di dalam repositori.
+dipilih dan didokumentasikan di sini, lalu diintegrasikan ke dalam `.github/workflows/ci.yml` saat fitur pertama siap — bukan sebelumnya, guna menghindari keberadaan *framework* pengujian yang tidak terpakai atau belum dikonfigurasi sepenuhnya di dalam repositori.

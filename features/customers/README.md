@@ -1,6 +1,6 @@
 # Fitur: Manajemen Pelanggan
 
-- **Pemilik:** Kontributor 2
+- **Pemilik:** Toimul Setyo Andri
 - **Status:** Belum diimplementasikan (tahap dasar)
 
 ## Cakupan

@@ -1,0 +1,10 @@
+-- Target PostgreSQL (Supabase) schema.
+--
+-- STATUS: Not yet written — pending full inspection of
+-- sql/source/classicmodels_mysql_dump.sql (tables, primary keys, foreign
+-- keys, relationships, nullable columns, data types, indexes, constraints,
+-- row counts, inter-table dependencies). See docs/data-dictionary.md.
+--
+-- This file will contain CREATE TABLE statements translating the source
+-- MySQL schema to PostgreSQL, table by table, only after that inspection
+-- is documented — no structure is invented ahead of it.

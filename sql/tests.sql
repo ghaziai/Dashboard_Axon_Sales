@@ -1,0 +1,12 @@
+-- Automated data-quality validation queries (NULL checks, duplicate
+-- detection, foreign-key/relationship integrity, invalid-value checks,
+-- data-type validation). Each query is expected to return 0 rows/count on
+-- a valid dataset. Referenced from testing/validation/.
+--
+-- STATUS: Not yet written — pending the migrated PostgreSQL schema.
+-- Example shape (to be adapted to the real, verified schema — not
+-- invented column names):
+--
+-- SELECT COUNT(*) FROM orderdetails WHERE "orderNumber" IS NULL; -- expect 0
+-- SELECT COUNT(*) FROM orderdetails WHERE "quantityOrdered" <= 0; -- expect 0
+-- SELECT COUNT(*) FROM orderdetails WHERE "priceEach" < 0; -- expect 0

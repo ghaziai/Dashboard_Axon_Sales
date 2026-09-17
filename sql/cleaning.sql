@@ -1,0 +1,8 @@
+-- Data cleaning / transformation queries.
+--
+-- STATUS: Not yet written — pending the Duplicate Detection, NULL
+-- Detection, Data Type Validation, Constraint Validation, Relationship
+-- Validation, and Business Rule Validation steps of the data pipeline
+-- (see root README.md). Each transformation applied here must be
+-- documented with its technical or business reason — no data is
+-- dropped or changed just because it "looks cleaner".

@@ -1,0 +1,6 @@
+-- Business analytics queries (Sales, Product, Customer, Employee, Office
+-- performance) that back the dashboard's KPIs and charts.
+--
+-- STATUS: Not yet written — depends on the validated, migrated dataset.
+-- See docs/analytics.md for the list of business questions each query
+-- will answer once implemented.

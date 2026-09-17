@@ -1,0 +1,8 @@
+-- Data migration procedure: MySQL classicmodels -> PostgreSQL/Supabase.
+--
+-- STATUS: Not yet written — depends on sql/schema.sql existing first.
+--
+-- Will cover, per the project's migration protocol: insertion order
+-- respecting foreign-key dependencies, MySQL -> PostgreSQL type
+-- conversions, and any structural changes required (documented alongside
+-- their technical/business reason in docs/data-dictionary.md).

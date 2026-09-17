@@ -52,10 +52,13 @@ file bersama (`app/layout.tsx`, `package.json`, `next.config.ts`,
 yang terkoordinasi (lihat `README_Dev.md`).
 
 ## Model data
-*Tertunda.* Database belum diperiksa dalam proyek ini (lihat
-`sql/source/` untuk *dump* MySQL `classicmodels` mentah). Pemeriksaan skema,
-rencana migrasi MySQL → PostgreSQL, dan kamus data merupakan tahap
-pekerjaan berikutnya — lihat `docs/data-dictionary.md`.
+Skema PostgreSQL sudah dimigrasikan dari dump MySQL `classicmodels` (lihat
+`sql/schema.sql`, `sql/migration.sql`) dan dijalankan melawan proyek Supabase
+`Axon_Sales` — lihat `docs/data-dictionary.md` untuk kamus data lengkap
+(tabel, key, relasi, tipe data). Lapisan akses data aplikasi tidak memakai
+SQL view/RPC kustom: `lib/data/sales-facts.ts` mengambil seluruh tabel dasar
+(dataset kecil, ~3.9 ribu baris total) lalu melakukan join dan agregasi di
+memori Server Component, dipakai bersama oleh seluruh fitur dasbor.
 
 ## Autentikasi / otorisasi
 *Tertunda — memerlukan keputusan yang belum dibuat.* Proyek ini hanya

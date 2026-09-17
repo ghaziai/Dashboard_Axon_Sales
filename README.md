@@ -2,9 +2,12 @@
 
 Dasbor analitik penjualan untuk Axon, yang dibangun menggunakan dataset sampel `classicmodels` dan dikembangkan sebagai latihan DevOps menyeluruh (*end-to-end*): perencanaan, pengembangan, pengujian, integrasi, rilis, deployment, pemantauan, dan umpan balik.
 
-> **Status: Tahap fondasi.** Belum ada fitur dasbor yang tersedia. Riwayat
-> *commit* ini menetapkan kerangka dasar (*scaffold*), arsitektur, dan batasan
-> kontributor proyek sebelum pengerjaan fitur dimulai.
+> **Status: Dasbor tahap pertama tersedia.** Database Supabase (`Axon_Sales`)
+> sudah terhubung dan berisi seluruh dataset `classicmodels` hasil migrasi
+> (lihat §5). Tujuh halaman dasbor (Ikhtisar, Analisis Penjualan, Produk,
+> Pelanggan, Karyawan, Kantor, dan Wawasan Lanjutan) berjalan lokal dengan
+> data nyata dari Supabase — lihat `docs/analytics.md` untuk daftar
+> pertanyaan bisnis yang sudah terjawab. Belum di-deploy (lihat §11).
 
 ## 1. Gambaran Umum Proyek
 Sebuah dasbor web untuk satu peran, yaitu **Sales** (Penjualan), guna melihat, memfilter, menganalisis, membuat, memperbarui, dan menghapus data penjualan Axon serta mengubah data transaksi mentah menjadi wawasan kinerja terkait pendapatan, produk, pelanggan, karyawan, dan kantor.
@@ -36,16 +39,20 @@ struktur folder, alasan penentuan batasan fitur, dan hal-hal yang keputusannya
 masih terbuka (pendekatan autentikasi).
 
 ## 5. Database
-Sumber utama data: **Supabase PostgreSQL**. Dataset sumber: `classicmodels`
-(customers, products, productlines, orders, orderdetails, payments,
-employees, offices), disediakan sebagai *dump* MySQL dan disimpan di
-[`sql/source/classicmodels_mysql_dump.sql`](sql/source/classicmodels_mysql_dump.sql).
+Sumber utama data: **Supabase PostgreSQL** (proyek `Axon_Sales`). Dataset sumber:
+`classicmodels` (customers, products, productlines, orders, orderdetails,
+payments, employees, offices), disediakan sebagai *dump* MySQL di
+[`sql/source/classicmodels_mysql_dump.sql`](sql/source/classicmodels_mysql_dump.sql)
+dan dimigrasikan ke PostgreSQL melalui [`sql/schema.sql`](sql/schema.sql) dan
+[`sql/migration.sql`](sql/migration.sql).
 
-**Belum ada migrasi yang dilakukan.** Pemeriksaan skema secara menyeluruh (tabel, *key*,
-relasi, kolom yang mengizinkan nilai *null*, tipe data, indeks, *constraint*,
-jumlah baris, dependensi) adalah tahap pekerjaan berikutnya — yang dicatat dalam
-[`docs/data-dictionary.md`](docs/data-dictionary.md); file ini sengaja dikosongkan
-agar tidak ada asumsi mengenai skema sebelum pemeriksaan tersebut dilakukan.
+**Migrasi sudah dijalankan dan diverifikasi** — jumlah baris di setiap tabel
+serta seluruh pemeriksaan kualitas data di [`sql/tests.sql`](sql/tests.sql)
+cocok dengan sumber (lihat [`docs/data-dictionary.md`](docs/data-dictionary.md)
+untuk rincian skema lengkap). Akses baca/tulis untuk peran `anon` diizinkan
+melalui kebijakan Row Level Security pada setiap tabel — dibuka penuh untuk
+`anon` karena keputusan autentikasi masih *Pending* (lihat bagian
+"Autentikasi / otorisasi" di `docs/architecture.md`).
 
 ## 6. Instalasi
 Prasyarat: **Node.js** (paket klien Supabase mensyaratkan `>=22`;
@@ -72,8 +79,11 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Ya | Dilindungi RLS, aman untuk diekspos |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Tidak** | Hanya untuk sisi server, melewati RLS — jangan pernah disertakan di sisi klien |
 
-Belum ada proyek Supabase yang disiapkan — bagian ini akan memuat langkah-langkah
-pengaturan konkret setelah proyek tersebut tersedia.
+Proyek Supabase `Axon_Sales` sudah disiapkan dan `.env.local` di lingkungan
+pengembangan sudah terisi (nilai URL + `anon` key dari
+`https://supabase.com/dashboard/project/flngoumoilywdcozcxom/settings/api`).
+`.env.local` tidak pernah di-*commit* (lihat `.gitignore`) — kontributor lain
+mengisinya sendiri dari dashboard proyek Supabase yang sama.
 
 ## 8. Pengembangan Lokal
 ```bash
@@ -104,10 +114,13 @@ Belum di-deploy.
 ## 13. Struktur Repositori
 ```
 axon-sales-dashboard/
-├── app/            Rute Next.js (App Router)
-├── components/ui/  Komponen UI dasar (primitif) yang digunakan bersama
+├── app/            Rute Next.js (App Router) — Ikhtisar, sales, products, customers,
+│                   employees, offices, insights
+├── components/ui/  Komponen UI dasar bersama (Card, KpiCard, DataTable, Sidebar,
+│                   charts/) yang digunakan lintas fitur
 ├── features/       Satu folder per domain terbatas (bounded domain) — lihat README.md masing-masing
-├── lib/            Klien Supabase bersama + utilitas lintas-fitur
+├── lib/            Klien Supabase bersama, lib/format.ts (pemformatan), dan
+│                   lib/data/sales-facts.ts (join + fetch data lintas-fitur)
 ├── sql/            Dataset sumber, skema, migrasi, pembersihan data, analitik, pengujian
 ├── testing/        Pengujian unit / integrasi / validasi
 ├── deployment/      Referensi cepat deployment

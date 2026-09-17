@@ -1,7 +1,10 @@
 # Fitur: Wawasan Lanjutan (Advanced Insights)
 
 - **Pemilik:** Ghazi
-- **Status:** Belum diimplementasikan (tahap fondasi)
+- **Status:** Diimplementasikan (tahap pertama) — halaman `/insights` dengan
+dua wawasan lintas-entitas: overlap produk terlaris vs. berpendapatan
+tertinggi, dan korelasi Pearson jumlah pelanggan vs. pendapatan per
+perwakilan penjualan
 
 ## Cakupan
 Analitik "Wawasan Lanjutan" lintas-fungsi yang tidak terikat pada satu fitur domain

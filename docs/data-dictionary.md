@@ -1,6 +1,10 @@
 # Kamus Data
 
-## Status: Inspeksi selesai — migrasi skema belum dijalankan
+## Status: Migrasi dijalankan dan diverifikasi
+
+Dijalankan melawan proyek Supabase `Axon_Sales` (`flngoumoilywdcozcxom`) pada
+2026-09-17 melalui `sql/schema.sql` lalu `sql/migration.sql`. Jumlah baris di
+setiap tabel (§9) dan seluruh pemeriksaan `sql/tests.sql` cocok dengan sumber.
 
 Seluruh isi dokumen ini diverifikasi langsung dari
 `sql/source/classicmodels_mysql_dump.sql` (4065 baris).
@@ -164,6 +168,7 @@ menjadi satu-satunya hal yang menjaga integritas referensial saat migrasi.
   `snake_case` adalah opsi yang lebih idiomatis untuk PostgreSQL tapi
   mengubah nama kolom dari sumber — jika tim ingin melakukan ini,
   perlu keputusan eksplisit dan dicatat sebagai perubahan terpisah.
-- **Provisioning proyek Supabase nyata** belum dilakukan — `sql/schema.sql`
-  belum pernah dijalankan melawan database sungguhan, jadi belum
-  tervalidasi secara eksekusi (baru tervalidasi secara pembacaan sumber).
+- **Provisioning proyek Supabase nyata** sudah dilakukan — `sql/schema.sql`
+  dan `sql/migration.sql` sudah dijalankan melawan proyek `Axon_Sales` dan
+  tervalidasi secara eksekusi (lihat catatan di `sql/migration.sql` dan
+  `sql/tests.sql`), bukan hanya secara pembacaan sumber.

@@ -1,7 +1,8 @@
 # Fitur: Analisis Penjualan
 
 - **Pemilik:** Ghazi
-- **Status:** Belum diimplementasikan (tahap dasar)
+- **Status:** Diimplementasikan — halaman `/sales` dengan pendapatan per
+tahun + YoY, distribusi status pesanan, dan 10 periode terbaik
 
 ## Cakupan
 Domain analisis performa penjualan (lihat `docs/analytics.md` setelah tersedia):

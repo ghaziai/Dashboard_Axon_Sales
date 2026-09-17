@@ -1,7 +1,8 @@
 # Fitur: Dasbor
 
 - **Pemilik:** Ghazi
-- **Status:** Belum diimplementasikan (tahap fondasi)
+- **Status:** Diimplementasikan — halaman Ikhtisar (`app/page.tsx`) dengan KPI,
+tren pendapatan bulanan, periode kinerja terbaik, dan top 5 produk/pelanggan
 
 ## Cakupan
 - Kerangka/tata letak dasbor dan navigasi (Ikhtisar, Analisis Penjualan, Analisis Produk,

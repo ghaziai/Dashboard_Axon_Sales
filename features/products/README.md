@@ -1,7 +1,10 @@
 # Fitur: Manajemen Produk
 
 - **Pemilik:** Ilham Widi Mahendra
-- **Status:** Belum diimplementasikan (tahap fondasi)
+- **Status:** Analitik produk tahap pertama sudah ada di halaman `/products`
+(`services/product-analysis.ts` — produk terlaris, pendapatan per lini
+produk), ditambahkan sebagai bagian dari dasbor awal. Daftar/filter/detail
+produk (cakupan utama fitur ini) belum diimplementasikan.
 
 ## Cakupan
 - Daftar produk, pemfilteran

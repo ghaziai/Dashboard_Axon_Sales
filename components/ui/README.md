@@ -2,7 +2,11 @@
 
 Elemen penyusun UI yang digunakan lintas fitur dan tidak memuat logika bisnis. misalnya tombol, kartu, tabel, input, modal, header halaman, badge, komponen untuk status kosong/error/loading, dll.
 
-**Status:** Belum diimplementasikan (tahap pengembangan fondasi).
+**Status:** Kerangka dasar pertama diimplementasikan: `Card`, `KpiCard`,
+`DataTable` (+ `EmptyState`), `PageHeader`, `Sidebar` (navigasi utama), dan
+`charts/` (`RevenueLineChart`, `RevenueBarChart`, `RevenuePieChart` berbasis
+Recharts). Semua bebas logika bisnis — menerima data melalui props dari
+Server Component pemanggil.
 
 ## Aturan
 Folder ini digunakan bersama oleh semua fitur. Menambahkan komponen dasar baru diperbolehkan;

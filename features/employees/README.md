@@ -1,7 +1,8 @@
 # Fitur: Analitik Karyawan
 
 - **Pemilik:** Ghazi
-- **Status:** Belum diimplementasikan (tahap fondasi)
+- **Status:** Diimplementasikan — halaman `/employees` dengan pendapatan,
+jumlah pelanggan, dan jumlah pesanan per perwakilan penjualan
 
 ## Cakupan
 Analitik kinerja perwakilan penjualan / karyawan:

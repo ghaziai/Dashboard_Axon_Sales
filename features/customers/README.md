@@ -1,7 +1,10 @@
 # Fitur: Manajemen Pelanggan
 
 - **Pemilik:** Toimul Setyo Andri
-- **Status:** Belum diimplementasikan (tahap dasar)
+- **Status:** Analitik pelanggan tahap pertama sudah ada di halaman
+`/customers` (`services/customer-analysis.ts` — top pelanggan, distribusi per
+negara), ditambahkan sebagai bagian dari dasbor awal. Daftar/pencarian/filter
+dan CRUD pelanggan (cakupan utama fitur ini) belum diimplementasikan.
 
 ## Cakupan
 - Daftar, pencarian, dan pemfilteran pelanggan

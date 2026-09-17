@@ -1,7 +1,8 @@
 # Fitur: Analitik Kantor
 
 - **Pemilik:** Ghazi
-- **Status:** Belum diimplementasikan (tahap fondasi)
+- **Status:** Diimplementasikan — halaman `/offices` dengan pendapatan per
+wilayah (territory), distribusi kantor, dan kinerja per kantor
 
 ## Cakupan
 Analitik kinerja kantor / geografis:

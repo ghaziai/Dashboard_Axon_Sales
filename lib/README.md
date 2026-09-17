@@ -5,13 +5,16 @@ fungsi pembantu pemformatan (mata uang, tanggal), konstanta, dan tipe generik
 yang digunakan bersama oleh lebih dari satu fitur.
 
 **Status:** `supabase/client.ts` (Komponen Klien) dan `supabase/server.ts`
-(Komponen Server/Action/Route Handler) sudah tersedia dan siap digunakan setelah
-`.env.local` diisi dengan URL/kunci *anon* proyek Supabase yang sebenarnya
-(lihat `.env.example` di *root*). Belum ada proyek Supabase aktif yang terhubung —
-itu adalah tahap berikutnya (migrasi data). Belum ada `middleware.ts`: *middleware*
-penyegaran sesi (*session-refresh*) baru diperlukan setelah alur autentikasi
-ditentukan (lihat `docs/architecture.md` → Authentication, saat ini statusnya *Pending*).
-Belum ada logika bisnis lain di sini.
+(Komponen Server/Action/Route Handler) sudah tersambung ke proyek Supabase
+`Axon_Sales` yang aktif (`.env.local` sudah terisi di lingkungan
+pengembangan). `format.ts` berisi *helper* pemformatan mata uang, angka,
+persen, dan label bulan yang dipakai lintas fitur. `data/sales-facts.ts`
+adalah lapisan akses data bersama: mengambil seluruh tabel dasar dari
+Supabase dan menggabungkannya menjadi satu larik *fact* (`SaleFact[]`) yang
+dipakai oleh setiap `features/*/services/`. Belum ada `middleware.ts`:
+*middleware* penyegaran sesi (*session-refresh*) baru diperlukan setelah alur
+autentikasi ditentukan (lihat `docs/architecture.md` → Authentication, saat
+ini statusnya *Pending*).
 
 ## Aturan
 Aturan koordinasi yang sama dengan `components/ui/`: perubahan yang bersifat

@@ -1,0 +1,9 @@
+# Normalize line endings across contributors on different operating systems
+# to avoid noisy diffs and false-positive merge conflicts.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.svg text eol=lf

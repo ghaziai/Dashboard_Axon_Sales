@@ -36,3 +36,13 @@ jobs:
         # server-rendered on demand (no cookies()-based route is prerendered),
         # so `next build` never touches Supabase -- verified locally by
         # running the build with .env.local removed before wiring this up.
+
+      - name: Data validation
+        run: npm run test:validation
+        env:
+          # Repo Variables, not Secrets -- these are the same public anon
+          # key/URL already shipped to the browser (see docs/deployment.md),
+          # safe to expose in workflow logs. RLS is open for anon (read),
+          # so no service-role credential is needed to run these checks.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}

@@ -19,7 +19,10 @@ describe("formatCurrency", () => {
 
 describe("formatCurrencyCompact", () => {
   it("compacts large amounts", () => {
-    expect(formatCurrencyCompact(988025)).toBe("$988.0K");
+    // Exact trailing-zero behavior ("$988K" vs "$988.0K") depends on the
+    // runtime's bundled ICU data (varies by Node version) -- assert the
+    // stable part instead of a hardcoded exact string.
+    expect(formatCurrencyCompact(988025)).toMatch(/^\$988(\.0)?K$/);
   });
 });
 

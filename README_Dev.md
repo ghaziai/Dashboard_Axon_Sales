@@ -30,7 +30,7 @@ dan mendapatkan tinjauan (review) atas perubahan tersebut:
 - `middleware.ts` (belum ada)
 - `.env.example`
 - `supabase/` (konfigurasi, migrasi)
-- `.github/workflows/` (belum ada)
+- `.github/workflows/`
 - `app/layout.tsx` (layout root)
 - File konfigurasi tingkat root lainnya
 
@@ -95,7 +95,7 @@ Buruk: `update project`
 - `package.json` / `package-lock.json`
 - `next.config.ts`, `tsconfig.json`
 - `app/layout.tsx`
-- `.github/workflows/` (setelah tersedia)
+- `.github/workflows/`
 - Konfigurasi `supabase/` (setelah tersedia)
 
 ## Lokasi berkas

@@ -59,12 +59,22 @@ yang menjadi dependensi fitur lain memerlukan koordinasi yang sama seperti di at
 | `toimul` | *Branch* kerja Toimul Setyo Andri |
 | `ilham` | *Branch* kerja Ilham Widi Mahendra |
 
-Alur:
+Alur (sudah aktif — branch protection wajib PR + status check `validate` lolos
+di `main`, `Testing`, maupun `Deployment`, lihat §10 `README.md`):
 ```
 ghazi  ┐
-toimul ├─→ PR ke main → Testing → Deployment → Vercel
+toimul ├─→ PR ke main (fitur, sesering mungkin)
 ilham  ┘
+              │
+              ▼ PR terpisah, saat siap rilis (bukan otomatis per-PR fitur)
+            main → Testing  (validasi integrasi)
+              │
+              ▼ PR terpisah
+          Testing → Deployment  (rilis) → Vercel
 ```
+Promosi `main → Testing → Deployment` dilakukan sengaja/manual per rilis
+(bukan otomatis setiap PR fitur ter-merge) — lihat `docs/deployment.md` untuk
+alasan pemilihan model ini.
 
 ## Alur kerja harian
 ```bash

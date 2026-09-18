@@ -1,29 +1,31 @@
 # Deployment — Referensi Cepat
 Penjelasan lengkap dan detail lingkungan tersedia di `docs/deployment.md`. File ini berfungsi sebagai daftar periksa operasional.
 
-**Status:** Live (deploy awal, manual) — https://dashboard-axon-sales.vercel.app
+**Status:** Live — https://dashboard-axon-sales.vercel.app. Alur 3-branch
+(`main → Testing → Deployment`) aktif dan sudah dipakai (PR #4, #5).
 
 ## Target
 Vercel, project `kuliah2/dashboard-axon-sales`.
 
-**Belum sesuai alur yang direncanakan:** deploy pertama ini dilakukan manual
-(`vercel deploy --prod`) untuk memperbaiki konfigurasi environment variable,
-bukan lewat CI → Testing → Deployment. Production Branch di Vercel saat ini
-masih `main`, bukan `Deployment` — mengubahnya butuh akses dashboard Vercel
-(Settings → Git → Production Branch), tidak tersedia lewat API/CLI. Sampai
-diubah, deploy berikutnya lewat push ke `main` akan langsung live tanpa
-melalui `Testing`/`Deployment` — perlakukan `main` dengan hati-hati sampai ini
-diperbaiki.
+**Satu langkah manual tersisa:** Production Branch di Vercel masih `main`,
+belum `Deployment` — ubah di Settings → Git → Production Branch (tidak ada
+cara lewat API/CLI, sudah dicek). Sampai diubah, push ke `main` masih memicu
+production deploy langsung; `Testing`/`Deployment` sudah berfungsi sebagai
+gate PR + CI, tapi belum jadi pemicu deploy yang sesungguhnya.
 
-## Alur (target, setelah Production Branch diperbaiki)
+## Alur
 ```
-Kode → Pull Request → CI (lint/test/build) → Branch Testing → Merge → Branch Deployment → Vercel
+Kode → Pull Request ke main → CI (lint/test/build)
+→ PR main → Testing (validasi integrasi)
+→ PR Testing → Deployment (rilis)
+→ Vercel (otomatis, setelah Production Branch = Deployment)
 ```
 
 ## Daftar periksa pra-deployment
 - [x] Proyek Supabase telah disiapkan, skema telah dimigrasi dan divalidasi
 - [x] Variabel lingkungan telah diatur di Vercel (Production/Preview/Development)
-- [ ] Status CI sukses (hijau) pada branch `Deployment` — belum berlaku, Production Branch masih `main`
+- [x] Branch protection aktif di `main`, `Testing`, `Deployment` (wajib PR + status check `validate`)
+- [ ] Production Branch Vercel = `Deployment` — masih `main`, menunggu langkah manual di atas
 - [x] `npm run build` berhasil dijalankan secara lokal
 - [x] Tidak ada kunci `service_role` yang terekspos ke bundle klien (tidak dipakai di kode sama sekali)
 

@@ -8,8 +8,9 @@ Dasbor analitik penjualan untuk Axon, yang dibangun menggunakan dataset sampel `
 > Penjualan, Produk, Pelanggan, Karyawan, Kantor, dan Wawasan Lanjutan) live
 > di https://dashboard-axon-sales.vercel.app dengan data nyata dari Supabase
 > — lihat `docs/analytics.md` untuk daftar pertanyaan bisnis yang sudah
-> terjawab. Deploy saat ini masih manual, belum lewat alur CI→Testing→Deployment
-> penuh (lihat §11 dan `docs/deployment.md` untuk gap yang diketahui).
+> terjawab. Alur rilis 3-branch (`main → Testing → Deployment`, masing-masing
+> lewat PR + CI) sudah aktif — lihat §11 dan `docs/deployment.md` untuk satu
+> langkah manual yang masih tersisa (Production Branch di Vercel).
 
 ## 1. Gambaran Umum Proyek
 Sebuah dasbor web untuk satu peran, yaitu **Sales** (Penjualan), guna melihat, memfilter, menganalisis, membuat, memperbarui, dan menghapus data penjualan Axon serta mengubah data transaksi mentah menjadi wawasan kinerja terkait pendapatan, produk, pelanggan, karyawan, dan kantor.
@@ -110,13 +111,18 @@ Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
 setiap push ke `main`/`Testing`/`Deployment` dan pada setiap pull request.
 Build tidak memerlukan Supabase secrets karena setiap route di-render dinamis saat
 runtime, bukan saat `next build` (sudah diverifikasi lokal dengan
-`.env.local` dihapus sementara sebelum pipeline ini ditulis).
+`.env.local` dihapus sementara sebelum pipeline ini ditulis). Branch
+protection aktif di `main`, `Testing`, dan `Deployment` — wajib lewat PR dan
+status check `validate` lolos sebelum merge (lihat `README_Dev.md`).
 
 ## 11. Deployment
+Model: trunk-based untuk pengembangan (`main` menerima semua PR fitur),
+promosi manual bertahap untuk rilis (`main → Testing → Deployment`, masing-masing
+lewat PR + CI — lihat alasan pemilihan model ini di riwayat diskusi tim).
 Lihat [`docs/deployment.md`](docs/deployment.md) dan
-[`deployment/README.md`](deployment/README.md) untuk alur lengkap serta gap
-yang diketahui (deploy pertama masih manual, Production Branch Vercel masih
-`main` bukan `Deployment`).
+[`deployment/README.md`](deployment/README.md) untuk alur lengkap serta satu
+langkah manual yang masih tersisa (Production Branch Vercel masih `main`,
+belum `Deployment`).
 
 ## 12. URL Produksi
 https://dashboard-axon-sales.vercel.app

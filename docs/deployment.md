@@ -1,35 +1,44 @@
 # Deployment
 
-## Status: Live (deploy awal, manual — belum lewat alur CI→Testing→Deployment)
+## Status: Live — alur 3-branch (main → Testing → Deployment) aktif
 
-Project Vercel: `kuliah2/dashboard-axon-sales`. Deploy pertama dilakukan
-manual via `vercel deploy --prod` untuk memperbaiki environment variable yang
-sempat salah/kosong (lihat riwayat percakapan — root cause: env var Supabase
-belum terisi saat deploy awal lewat dashboard Vercel). Karena itu, deploy ini
-**belum melalui** alur CI → Testing → Deployment di bawah.
+Project Vercel: `kuliah2/dashboard-axon-sales`. Model rilis: **trunk-based
+untuk pengembangan** (`main` menerima semua PR dari branch kontributor),
+**promosi manual bertahap untuk rilis** (`main` → `Testing` → `Deployment`,
+masing-masing lewat PR + CI, bukan langsung push/force-push). Ini sengaja
+dipilih (bukan `main` langsung ke production) supaya ada jeda terkendali
+antara "kode tergabung & lolos CI" dan "kode live" — lihat riwayat
+percakapan untuk pertimbangan lengkapnya.
 
-**Gap yang diketahui:** Production Branch di pengaturan Vercel masih `main`,
-bukan `Deployment`. Mengubahnya butuh akses dashboard Vercel (Settings → Git
-→ Production Branch) — tidak ada endpoint API/CLI publik untuk ini per
-pemeriksaan `vercel api list` dan dokumentasi REST API Vercel. Sampai diubah
-manual, push ke `main` akan otomatis men-trigger production deploy, melewati
-`Testing`/`Deployment`.
+Deploy pertama sempat dilakukan manual via `vercel deploy --prod` untuk
+memperbaiki environment variable yang sempat kosong. Sejak itu, `Testing`
+dan `Deployment` sudah disusulkan ke commit yang sama dengan `main` lewat PR
+#4 dan #5 (CI lolos di keduanya) — bukan lagi tertinggal.
+
+**Satu langkah manual yang masih tersisa (butuh akses dashboard Vercel,
+tidak ada endpoint API/CLI publik untuk ini — sudah dicek lewat
+`vercel api list` dan dokumentasi REST API Vercel):**
+Settings → Git → **Production Branch** di project `kuliah2/dashboard-axon-sales`
+→ ubah dari `main` menjadi `Deployment`. Sampai ini dilakukan, Vercel masih
+men-trigger production deploy dari push ke `main`, bukan dari `Deployment`.
 
 ## Target
-Vercel, deployment seharusnya hanya dilakukan dari branch `Deployment` (branch rilis — tidak ada pengembangan langsung di branch ini) — lihat gap di atas.
+Vercel, deployment hanya dilakukan dari branch `Deployment` (branch rilis — tidak ada pengembangan langsung di branch ini).
 
-## Alur (target, setelah Production Branch diperbaiki)
+## Alur
 ```
 Kode (branch fitur)
-→ Pull Request
+→ Pull Request ke main
 → GitHub Actions CI (lint, test, build)
-→ Branch Testing (validasi integrasi/regresi)
-→ Merge ke Deployment
-→ Deployment ke Vercel
+→ Branch Testing (validasi integrasi/regresi, via PR main → Testing)
+→ Branch Deployment (rilis, via PR Testing → Deployment)
+→ Deployment ke Vercel (otomatis, setelah Production Branch = Deployment)
 → Pemantauan (Monitoring)
 ```
 
-Kode yang gagal dalam tahap CI tidak akan pernah di-deploy — begitu Production Branch diperbaiki.
+Kode yang gagal dalam tahap CI tidak akan pernah ter-merge (branch protection
+mewajibkan status check `validate` lolos di ketiga branch: `main`, `Testing`,
+`Deployment`).
 
 ## Environment
 | Variabel Env | Lokasi pengaturan | Diekspos ke browser? |

@@ -9,8 +9,9 @@ Dasbor analitik penjualan untuk Axon, yang dibangun menggunakan dataset sampel `
 > di https://dashboard-axon-sales.vercel.app dengan data nyata dari Supabase
 > — lihat `docs/analytics.md` untuk daftar pertanyaan bisnis yang sudah
 > terjawab. Alur rilis 3-branch (`main → Testing → Deployment`, masing-masing
-> lewat PR + CI) sudah aktif — lihat §11 dan `docs/deployment.md` untuk satu
-> langkah manual yang masih tersisa (Production Branch di Vercel).
+> lewat PR + CI, Production Branch Vercel = `Deployment`) sudah aktif penuh
+> — lihat §11 dan `docs/deployment.md`. Toimul Setyo Andri dan Ilham Widi
+> Mahendra sudah diundang sebagai kolaborator repo (menunggu diterima).
 
 ## 1. Gambaran Umum Proyek
 Sebuah dasbor web untuk satu peran, yaitu **Sales** (Penjualan), guna melihat, memfilter, menganalisis, membuat, memperbarui, dan menghapus data penjualan Axon serta mengubah data transaksi mentah menjadi wawasan kinerja terkait pendapatan, produk, pelanggan, karyawan, dan kantor.
@@ -118,11 +119,9 @@ status check `validate` lolos sebelum merge (lihat `README_Dev.md`).
 ## 11. Deployment
 Model: trunk-based untuk pengembangan (`main` menerima semua PR fitur),
 promosi manual bertahap untuk rilis (`main → Testing → Deployment`, masing-masing
-lewat PR + CI — lihat alasan pemilihan model ini di riwayat diskusi tim).
+lewat PR + CI). Production Branch Vercel = `Deployment` (aktif, terverifikasi).
 Lihat [`docs/deployment.md`](docs/deployment.md) dan
-[`deployment/README.md`](deployment/README.md) untuk alur lengkap serta satu
-langkah manual yang masih tersisa (Production Branch Vercel masih `main`,
-belum `Deployment`).
+[`deployment/README.md`](deployment/README.md) untuk alur lengkap.
 
 ## 12. URL Produksi
 https://dashboard-axon-sales.vercel.app

@@ -12,18 +12,17 @@ percakapan untuk pertimbangan lengkapnya.
 
 Deploy pertama sempat dilakukan manual via `vercel deploy --prod` untuk
 memperbaiki environment variable yang sempat kosong. Sejak itu, `Testing`
-dan `Deployment` sudah disusulkan ke commit yang sama dengan `main` lewat PR
-#4 dan #5 (CI lolos di keduanya) — bukan lagi tertinggal.
+dan `Deployment` sudah disusulkan ke commit yang sama dengan `main` beberapa
+kali lewat PR (#4/#5, lalu #7/#8) — CI lolos setiap kali.
 
-**Satu langkah manual yang masih tersisa (butuh akses dashboard Vercel,
-tidak ada endpoint API/CLI publik untuk ini — sudah dicek lewat
-`vercel api list` dan dokumentasi REST API Vercel):**
-Settings → Git → **Production Branch** di project `kuliah2/dashboard-axon-sales`
-→ ubah dari `main` menjadi `Deployment`. Sampai ini dilakukan, Vercel masih
-men-trigger production deploy dari push ke `main`, bukan dari `Deployment`.
+**Production Branch di Vercel sudah `Deployment`** (diubah manual lewat
+dashboard oleh pemilik project, diverifikasi lewat `GET /v9/projects/...` →
+`link.productionBranch: "Deployment"`). Alur rilis 3-branch di bawah ini
+sudah berlaku penuh — push/merge ke `main` atau `Testing` tidak lagi memicu
+production deploy, hanya merge ke `Deployment` yang memicu.
 
 ## Target
-Vercel, deployment hanya dilakukan dari branch `Deployment` (branch rilis — tidak ada pengembangan langsung di branch ini).
+Vercel, deployment production hanya dipicu dari branch `Deployment` (branch rilis — tidak ada pengembangan langsung di branch ini). Sudah berlaku, bukan lagi rencana.
 
 ## Alur
 ```

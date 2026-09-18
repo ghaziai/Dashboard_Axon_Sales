@@ -9,7 +9,8 @@ Vercel, deployment hanya dilakukan dari branch `Deployment` (branch rilis — ti
 ```
 Kode (branch fitur)
 → Pull Request
-→ GitHub Actions CI (lint, test, build)
+→ GitHub Actions CI (lint, build — step `test` menyusul setelah
+  testing infrastructure terisi, lihat `docs/testing.md`)
 → Branch Testing (validasi integrasi/regresi)
 → Merge ke Deployment
 → Deployment ke Vercel

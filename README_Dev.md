@@ -6,7 +6,7 @@ apa pun di luar folder fitur Anda sendiri.
 ## Kontributor dan kepemilikan
 | Kontributor | Tanggung Jawab |
 |---|---|
-| Ghazi | Fondasi proyek, arsitektur, DevOps, CI/CD, inti dashboard (`features/dashboard`, `features/sales`, `features/employees`, `features/offices`, `features/analytics`), integrasi, deployment, dokumentasi, infrastruktur pengujian, fondasi analitik |
+| Muhammad Ghazi | Fondasi proyek, arsitektur, DevOps, CI/CD, inti dashboard (`features/dashboard`, `features/sales`, `features/employees`, `features/offices`, `features/analytics`), integrasi, deployment, dokumentasi, infrastruktur pengujian, fondasi analitik |
 | Toimul Setyo Andri | `features/customers/` |
 | Ilham Widi Mahendra | `features/products/`, `features/orders/` |
 

@@ -89,19 +89,26 @@ mengisinya sendiri dari dashboard proyek Supabase yang sama.
 ```bash
 npm run dev      # menjalankan server pengembangan di http://localhost:3000
 npm run lint      # ESLint
+npm test          # Vitest — unit test (lihat §9)
 npm run build     # build produksi (juga menjalankan pemeriksaan TypeScript)
 ```
 
 ## 9. Pengujian
-Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Belum ada
-pengujian yang dibuat — belum ada aplikasi atau data hasil migrasi untuk diuji.
-Lapisan pengujian, setelah tersedia: `testing/unit/`, `testing/integration/`,
-`testing/validation/`, serta `sql/tests.sql` untuk pemeriksaan kualitas data.
+Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Lapisan
+**Unit** sudah diimplementasikan dengan Vitest (`npm test`, 52 test) — mencakup
+seluruh fungsi agregasi bisnis di `features/*/services/*.ts` dan `lib/format.ts`.
+`sql/tests.sql` berisi kueri validasi data yang sudah dijalankan manual saat
+migrasi (lihat §5), tapi belum otomatis di CI (alasannya didokumentasikan di
+`docs/testing.md`). Lapisan **Integrasi** dan **Validasi data otomatis**
+(`testing/integration/`, `testing/validation/`) masih *Pending*.
 
 ## 10. CI/CD
-Belum dikonfigurasi. Rencana: GitHub Actions yang menjalankan install → lint → test →
-build saat ada push/PR ke branch `Testing` dan `Deployment` — akan ditambahkan
-setelah ada fitur untuk divalidasi, serta didokumentasikan dalam `docs/deployment.md` saat fitur tersebut siap.
+Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+`checkout → install (npm ci) → lint → test → build`, berjalan otomatis pada
+setiap push ke `main`/`Testing`/`Deployment` dan pada setiap pull request.
+Build tidak memerlukan Supabase secrets karena setiap route di-render dinamis saat
+runtime, bukan saat `next build` (sudah diverifikasi lokal dengan
+`.env.local` dihapus sementara sebelum pipeline ini ditulis).
 
 ## 11. Deployment
 Lihat [`docs/deployment.md`](docs/deployment.md) dan

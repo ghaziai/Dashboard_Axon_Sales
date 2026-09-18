@@ -91,28 +91,33 @@ mengisinya sendiri dari dashboard proyek Supabase yang sama.
 
 ## 8. Pengembangan Lokal
 ```bash
-npm run dev      # menjalankan server pengembangan di http://localhost:3000
-npm run lint      # ESLint
-npm test          # Vitest — unit test (lihat §9)
-npm run build     # build produksi (juga menjalankan pemeriksaan TypeScript)
+npm run dev              # menjalankan server pengembangan di http://localhost:3000
+npm run lint              # ESLint
+npm test                  # Vitest — unit test, offline (lihat §9)
+npm run test:validation   # Vitest — validasi data terhadap Supabase asli (lihat §9)
+npm run build             # build produksi (juga menjalankan pemeriksaan TypeScript)
 ```
 
 ## 9. Pengujian
 Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Lapisan
-**Unit** sudah diimplementasikan dengan Vitest (`npm test`, 52 test) — mencakup
-seluruh fungsi agregasi bisnis di `features/*/services/*.ts` dan `lib/format.ts`.
-`sql/tests.sql` berisi kueri validasi data yang sudah dijalankan manual saat
-migrasi (lihat §5), tapi belum otomatis di CI (alasannya didokumentasikan di
-`docs/testing.md`). Lapisan **Integrasi** dan **Validasi data otomatis**
-(`testing/integration/`, `testing/validation/`) masih *Pending*.
+**Unit** (Vitest, `npm test`, 52 test) mencakup seluruh fungsi agregasi bisnis
+di `features/*/services/*.ts` dan `lib/format.ts` — murni, tanpa network.
+Lapisan **Validasi data** (`npm run test:validation`, 14 pemeriksaan) adalah
+mirror otomatis dari `sql/tests.sql` (NULL, nilai tidak valid, integritas FK,
+jumlah baris), dijalankan lewat Supabase JS client (anon key) terhadap
+database asli — lihat `docs/testing.md` untuk kenapa ini tidak butuh secret
+database sensitif. Lapisan **Integrasi** (`testing/integration/`) masih *Pending*.
 
 ## 10. CI/CD
 Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
-`checkout → install (npm ci) → lint → test → build`, berjalan otomatis pada
-setiap push ke `main`/`Testing`/`Deployment` dan pada setiap pull request.
-Build tidak memerlukan Supabase secrets karena setiap route di-render dinamis saat
-runtime, bukan saat `next build` (sudah diverifikasi lokal dengan
-`.env.local` dihapus sementara sebelum pipeline ini ditulis). Branch
+`checkout → install (npm ci) → lint → test → build → data validation`,
+berjalan otomatis pada setiap push ke `main`/`Testing`/`Deployment` dan pada
+setiap pull request. Build tidak memerlukan Supabase secrets karena setiap
+route di-render dinamis saat runtime, bukan saat `next build` (sudah
+diverifikasi lokal dengan `.env.local` dihapus sementara sebelum pipeline ini
+ditulis) — tapi step *Data validation* memerlukan `NEXT_PUBLIC_SUPABASE_URL`
+dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`, disuplai lewat GitHub Actions
+**Variables** (bukan Secret, karena nilainya memang publik). Branch
 protection aktif di `main`, `Testing`, dan `Deployment` — wajib lewat PR dan
 status check `validate` lolos sebelum merge (lihat `README_Dev.md`).
 

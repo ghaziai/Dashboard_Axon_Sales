@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:validation": "vitest run --config vitest.validation.config.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -89,23 +89,24 @@ mengisinya sendiri dari dashboard proyek Supabase yang sama.
 ```bash
 npm run dev      # menjalankan server pengembangan di http://localhost:3000
 npm run lint      # ESLint
+npm test          # Vitest — unit test (lihat §9)
 npm run build     # build produksi (juga menjalankan pemeriksaan TypeScript)
 ```
 
 ## 9. Pengujian
-Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Dasbor dan
-data hasil migrasi sudah tersedia, tetapi **belum ada automated test suite yang
-ditulis** — `sql/tests.sql` berisi kueri validasi manual (lihat §5), namun belum
-dijalankan otomatis oleh CI. Lapisan pengujian, setelah tersedia: `testing/unit/`,
-`testing/integration/`, `testing/validation/`.
+Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Lapisan
+**Unit** sudah diimplementasikan dengan Vitest (`npm test`, 52 test) — mencakup
+seluruh fungsi agregasi bisnis di `features/*/services/*.ts` dan `lib/format.ts`.
+`sql/tests.sql` berisi kueri validasi data yang sudah dijalankan manual saat
+migrasi (lihat §5), tapi belum otomatis di CI (alasannya didokumentasikan di
+`docs/testing.md`). Lapisan **Integrasi** dan **Validasi data otomatis**
+(`testing/integration/`, `testing/validation/`) masih *Pending*.
 
 ## 10. CI/CD
 Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
-`checkout → install (npm ci) → lint → build`, berjalan otomatis pada setiap
-push ke `main`/`Testing`/`Deployment` dan pada setiap pull request. Belum ada
-step `test` — akan ditambahkan begitu `testing/` (unit/integration/validation)
-terisi test nyata, bukan sebelum itu (lihat `docs/testing.md`). Build tidak
-memerlukan Supabase secrets karena setiap route di-render dinamis saat
+`checkout → install (npm ci) → lint → test → build`, berjalan otomatis pada
+setiap push ke `main`/`Testing`/`Deployment` dan pada setiap pull request.
+Build tidak memerlukan Supabase secrets karena setiap route di-render dinamis saat
 runtime, bukan saat `next build` (sudah diverifikasi lokal dengan
 `.env.local` dihapus sementara sebelum pipeline ini ditulis).
 

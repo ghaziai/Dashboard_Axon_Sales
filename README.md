@@ -2,12 +2,15 @@
 
 Dasbor analitik penjualan untuk Axon, yang dibangun menggunakan dataset sampel `classicmodels` dan dikembangkan sebagai latihan DevOps menyeluruh (*end-to-end*): perencanaan, pengembangan, pengujian, integrasi, rilis, deployment, pemantauan, dan umpan balik.
 
-> **Status: Dasbor tahap pertama tersedia.** Database Supabase (`Axon_Sales`)
-> sudah terhubung dan berisi seluruh dataset `classicmodels` hasil migrasi
-> (lihat §5). Tujuh halaman dasbor (Ikhtisar, Analisis Penjualan, Produk,
-> Pelanggan, Karyawan, Kantor, dan Wawasan Lanjutan) berjalan lokal dengan
-> data nyata dari Supabase — lihat `docs/analytics.md` untuk daftar
-> pertanyaan bisnis yang sudah terjawab. Belum di-deploy (lihat §11).
+> **Status: Dasbor tahap pertama live di production.** Database Supabase
+> (`Axon_Sales`) sudah terhubung dan berisi seluruh dataset `classicmodels`
+> hasil migrasi (lihat §5). Tujuh halaman dasbor (Ikhtisar, Analisis
+> Penjualan, Produk, Pelanggan, Karyawan, Kantor, dan Wawasan Lanjutan) live
+> di https://dashboard-axon-sales.vercel.app dengan data nyata dari Supabase
+> — lihat `docs/analytics.md` untuk daftar pertanyaan bisnis yang sudah
+> terjawab. Alur rilis 3-branch (`main → Testing → Deployment`, masing-masing
+> lewat PR + CI) sudah aktif — lihat §11 dan `docs/deployment.md` untuk satu
+> langkah manual yang masih tersisa (Production Branch di Vercel).
 
 ## 1. Gambaran Umum Proyek
 Sebuah dasbor web untuk satu peran, yaitu **Sales** (Penjualan), guna melihat, memfilter, menganalisis, membuat, memperbarui, dan menghapus data penjualan Axon serta mengubah data transaksi mentah menjadi wawasan kinerja terkait pendapatan, produk, pelanggan, karyawan, dan kantor.
@@ -55,9 +58,9 @@ melalui kebijakan Row Level Security pada setiap tabel — dibuka penuh untuk
 "Autentikasi / otorisasi" di `docs/architecture.md`).
 
 ## 6. Instalasi
-Prasyarat: **Node.js** (paket klien Supabase mensyaratkan `>=22`;
-sejauh ini telah dibangun dan diverifikasi menggunakan Node 20.14 — jika Anda mengalami
-masalah saat instalasi atau *runtime*, beralihlah ke Node 22 LTS terlebih dahulu), **npm**, **Git**.
+Prasyarat: **Node.js `>=22`** (lihat `package.json` → `engines`; disyaratkan oleh
+`@supabase/supabase-js`, dan versi yang sama dipakai CI serta Vercel — lihat
+`.github/workflows/ci.yml` dan pengaturan Node Version di Vercel), **npm**, **Git**.
 
 ```bash
 git clone <repository-url>
@@ -108,15 +111,21 @@ Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
 setiap push ke `main`/`Testing`/`Deployment` dan pada setiap pull request.
 Build tidak memerlukan Supabase secrets karena setiap route di-render dinamis saat
 runtime, bukan saat `next build` (sudah diverifikasi lokal dengan
-`.env.local` dihapus sementara sebelum pipeline ini ditulis).
+`.env.local` dihapus sementara sebelum pipeline ini ditulis). Branch
+protection aktif di `main`, `Testing`, dan `Deployment` — wajib lewat PR dan
+status check `validate` lolos sebelum merge (lihat `README_Dev.md`).
 
 ## 11. Deployment
+Model: trunk-based untuk pengembangan (`main` menerima semua PR fitur),
+promosi manual bertahap untuk rilis (`main → Testing → Deployment`, masing-masing
+lewat PR + CI — lihat alasan pemilihan model ini di riwayat diskusi tim).
 Lihat [`docs/deployment.md`](docs/deployment.md) dan
-[`deployment/README.md`](deployment/README.md) untuk alur yang direncanakan.
-**Belum di-deploy.**
+[`deployment/README.md`](deployment/README.md) untuk alur lengkap serta satu
+langkah manual yang masih tersisa (Production Branch Vercel masih `main`,
+belum `Deployment`).
 
 ## 12. URL Produksi
-Belum di-deploy.
+https://dashboard-axon-sales.vercel.app
 
 ## 13. Struktur Repositori
 ```
@@ -137,9 +146,11 @@ axon-sales-dashboard/
 ```
 
 ## 14. Pemecahan Masalah (Troubleshooting)
-- **`npm install` menampilkan peringatan terkait engine Node `>=22`**: paket Supabase
-lebih optimal dengan Node 22+; proses instalasi tetap berhasil pada Node 20.14,
-namun beralihlah ke versi lebih baru jika Anda mengalami masalah saat runtime.
+- **`npm install` menampilkan peringatan terkait engine Node `>=22`**: pastikan
+Anda memakai Node `>=22` (lihat `package.json` → `engines`) — di bawah itu,
+`@supabase/supabase-js` dan beberapa nilai format `Intl` (mis. compact currency
+di `lib/format.ts`) bisa berperilaku sedikit berbeda karena versi ICU yang
+dibundel Node ikut berbeda per versi.
 - **Turbopack mendeteksi `package-lock.json` yang tidak relevan dari folder induk**:
 masalah ini sudah diperbaiki melalui `turbopack.root` di `next.config.ts` — jika
 masalah muncul kembali setelah memindahkan repositori, pastikan jalur (path)

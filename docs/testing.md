@@ -1,7 +1,11 @@
 # Strategi Pengujian
 
 ## Status
-Rencana telah ditetapkan (tahap awal/fondasi); belum ada pengujian yang dibuat karena belum ada aplikasi atau data migrasi untuk diuji.
+Dasbor tahap pertama dan data migrasi sudah tersedia (lihat README.md §5, §11),
+tetapi **belum ada automated test suite yang ditulis**. `sql/tests.sql` berisi
+kueri validasi yang sudah pernah dijalankan manual saat migrasi (lihat catatan
+di file tersebut), tapi belum terhubung ke CI. CI (`.github/workflows/ci.yml`)
+saat ini baru menjalankan lint + build — belum ada step `test`.
 
 ## Lapisan
 

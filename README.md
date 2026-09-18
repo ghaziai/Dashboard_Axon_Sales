@@ -93,15 +93,21 @@ npm run build     # build produksi (juga menjalankan pemeriksaan TypeScript)
 ```
 
 ## 9. Pengujian
-Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Belum ada
-pengujian yang dibuat — belum ada aplikasi atau data hasil migrasi untuk diuji.
-Lapisan pengujian, setelah tersedia: `testing/unit/`, `testing/integration/`,
-`testing/validation/`, serta `sql/tests.sql` untuk pemeriksaan kualitas data.
+Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Dasbor dan
+data hasil migrasi sudah tersedia, tetapi **belum ada automated test suite yang
+ditulis** — `sql/tests.sql` berisi kueri validasi manual (lihat §5), namun belum
+dijalankan otomatis oleh CI. Lapisan pengujian, setelah tersedia: `testing/unit/`,
+`testing/integration/`, `testing/validation/`.
 
 ## 10. CI/CD
-Belum dikonfigurasi. Rencana: GitHub Actions yang menjalankan install → lint → test →
-build saat ada push/PR ke branch `Testing` dan `Deployment` — akan ditambahkan
-setelah ada fitur untuk divalidasi, serta didokumentasikan dalam `docs/deployment.md` saat fitur tersebut siap.
+Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+`checkout → install (npm ci) → lint → build`, berjalan otomatis pada setiap
+push ke `main`/`Testing`/`Deployment` dan pada setiap pull request. Belum ada
+step `test` — akan ditambahkan begitu `testing/` (unit/integration/validation)
+terisi test nyata, bukan sebelum itu (lihat `docs/testing.md`). Build tidak
+memerlukan Supabase secrets karena setiap route di-render dinamis saat
+runtime, bukan saat `next build` (sudah diverifikasi lokal dengan
+`.env.local` dihapus sementara sebelum pipeline ini ditulis).
 
 ## 11. Deployment
 Lihat [`docs/deployment.md`](docs/deployment.md) dan

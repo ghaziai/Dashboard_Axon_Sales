@@ -6,9 +6,15 @@ apa pun di luar folder fitur Anda sendiri.
 ## Kontributor dan kepemilikan
 | Kontributor | Tanggung Jawab |
 |---|---|
-| Kontributor 1 | Fondasi proyek, arsitektur, DevOps, CI/CD, inti dashboard (`features/dashboard`, `features/sales`, `features/analytics`), integrasi, deployment, dokumentasi, infrastruktur pengujian, fondasi analitik |
-| Kontributor 2 | `features/customers/` |
-| Kontributor 3 | `features/products/`, `features/orders/` |
+| Muhammad Ghazi | Fondasi proyek, arsitektur, DevOps, CI/CD, inti dashboard (`features/dashboard`, `features/sales`, `features/employees`, `features/offices`, `features/analytics`), integrasi, deployment, dokumentasi, infrastruktur pengujian, fondasi analitik |
+| Toimul Setyo Andri | `features/customers/` |
+| Ilham Widi Mahendra | `features/products/`, `features/orders/` |
+
+> Catatan: `app/customers/` dan `app/products/` beserta
+> `features/customers/services/`, `features/products/services/` sudah berisi
+> scaffold analitik awal (dibuat sebagai bagian dari dasbor tahap pertama,
+> lihat `docs/analytics.md`). Kepemilikan utama fitur ini tetap di atas —
+> scaffold tersebut adalah titik awal, bukan implementasi final.
 
 ## Aturan: tetap berada di dalam folder fitur Anda
 Setiap folder `features/<name>/` adalah batasan Anda. Jangan mengimplementasikan atau
@@ -38,23 +44,26 @@ ekspor baru diperbolehkan tanpa perlu bertanya; Mengubah atau menghapus *export*
 yang menjadi dependensi fitur lain memerlukan koordinasi yang sama seperti di atas.
 
 ## Strategi *branch*
-> Nama *branch* menggunakan format *kebab-case* (`kontributor-1`, bukan `Kontributor 1`) —
-> nama referensi *git* tidak boleh mengandung spasi.
+> Nama *branch* kontributor menggunakan nama personal dalam format *kebab-case*
+> huruf kecil (`ghazi`, bukan `Ghazi` atau `Kontributor 1`) — nama referensi
+> *git* tidak boleh mengandung spasi. `Deployment` dan `Testing` tetap
+> menggunakan PascalCase karena keduanya *branch* proses (rilis/integrasi),
+> bukan *branch* kerja individu.
 
 | Branch | Tujuan |
 |---|---|
 | `main` | *Trunk*. Menyimpan fondasi/riwayat bersama (tahap ini) dan menjadi titik integrasi tempat *branch* kontributor dibuat serta tempat PR (Pull Request) dikirimkan kembali. |
 | `Deployment` | *Branch* rilis. **Jangan pernah melakukan pengembangan langsung di sini.** Hanya menerima *merge* yang telah lolos tahap `Testing`. |
 | `Testing` | Integrasi/regresi/validasi *end-to-end* sebelum rilis. |
-| `kontributor-1` | *Branch* kerja Muhammad Ghazi |
-| `kontributor-2` | *Branch* kerja Toimul Setyo Andri |
-| `kontributor-3` | *Branch* kerja Ilham Widi Mahendra |
+| `ghazi` | *Branch* kerja Ghazi |
+| `toimul` | *Branch* kerja Toimul Setyo Andri |
+| `ilham` | *Branch* kerja Ilham Widi Mahendra |
 
 Alur:
 ```
-kontributor-1 ┐
-kontributor-2 ├─→ PR ke main → Testing → Deployment → Vercel
-kontributor-3 ┘
+ghazi  ┐
+toimul ├─→ PR ke main → Testing → Deployment → Vercel
+ilham  ┘
 ```
 
 ## Alur kerja harian

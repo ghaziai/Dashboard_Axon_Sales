@@ -40,3 +40,13 @@ export function formatMonthKey(key: string): string {
   const [year, month] = key.split("-").map(Number);
   return monthFormatter.format(new Date(year, month - 1, 1));
 }
+
+const dateFormatter = new Intl.DateTimeFormat("id-ID", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+export function formatDate(dateString: string): string {
+  return dateFormatter.format(new Date(dateString));
+}

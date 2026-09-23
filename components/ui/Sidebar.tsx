@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Ikhtisar" },
   { href: "/sales", label: "Analisis Penjualan" },
   { href: "/products", label: "Analisis Produk" },
+  { href: "/orders", label: "Analisis Pesanan" },
   { href: "/customers", label: "Analisis Pelanggan" },
   { href: "/employees", label: "Analisis Karyawan" },
   { href: "/offices", label: "Analisis Kantor" },

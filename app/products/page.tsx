@@ -2,13 +2,12 @@ import { getSalesData } from "@/lib/data/sales-facts";
 import { buildProductAnalysis } from "@/features/products/services/product-analysis";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Card } from "@/components/ui/Card";
-import { DataTable } from "@/components/ui/DataTable";
 import { RevenueBarChart } from "@/components/ui/charts/RevenueBarChart";
-import { formatCurrency, formatNumber } from "@/lib/format";
+import { ProductClientTable } from "@/features/products/components/ProductClientTable";
 
 export default async function ProductsPage() {
   const { facts, products } = await getSalesData();
-  const { topByRevenue, topByQuantity, revenueByLine } = buildProductAnalysis(facts, products);
+  const { topByRevenue, revenueByLine } = buildProductAnalysis(facts, products);
 
   return (
     <div>
@@ -33,22 +32,8 @@ export default async function ProductsPage() {
       </div>
 
       <div className="mt-6">
-        <Card title="10 Produk Terlaris (berdasarkan Kuantitas)">
-          <DataTable
-            rowKey={(row) => row.productCode}
-            rows={topByQuantity}
-            columns={[
-              { header: "Produk", render: (row) => row.productName },
-              { header: "Lini Produk", render: (row) => row.productLine },
-              { header: "Kuantitas Terjual", align: "right", render: (row) => formatNumber(row.quantity) },
-              { header: "Pendapatan", align: "right", render: (row) => formatCurrency(row.revenue) },
-              {
-                header: "Stok Tersisa",
-                align: "right",
-                render: (row) => formatNumber(row.quantityInStock),
-              },
-            ]}
-          />
+        <Card title="Daftar Lengkap Produk">
+          <ProductClientTable products={buildProductAnalysis(facts, products).allProducts} />
         </Card>
       </div>
     </div>

@@ -7,6 +7,8 @@ export type ProductPerformance = {
   revenue: number;
   quantity: number;
   quantityInStock: number;
+  buyPrice: number;
+  msrp: number;
 };
 
 export type LineRevenue = { label: string; revenue: number; quantity: number };
@@ -28,6 +30,8 @@ export function buildProductAnalysis(facts: SaleFact[], products: ProductRow[]):
       revenue: 0,
       quantity: 0,
       quantityInStock: p.quantityInStock,
+      buyPrice: p.buyPrice,
+      msrp: p.msrp,
     });
   }
 

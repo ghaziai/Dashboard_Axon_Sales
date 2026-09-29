@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Default theme is light regardless of OS preference: `dark:` utilities
+   (used throughout components/ui/* and app/*) only activate under an
+   explicit `.dark` ancestor class, which nothing in the app sets yet.
+   Switches Tailwind's dark variant from prefers-color-scheme (media query)
+   to class-based -- the standard Tailwind v4 way to do this. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,11 +19,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {

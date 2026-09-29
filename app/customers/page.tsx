@@ -5,18 +5,20 @@ import { Card } from "@/components/ui/Card";
 import { DataTable } from "@/components/ui/DataTable";
 import { RevenueBarChart } from "@/components/ui/charts/RevenueBarChart";
 import { formatCurrency, formatNumber } from "@/lib/format";
+import { CustomerManager } from "@/features/customers/components/CustomerManager";
 
 export default async function CustomersPage() {
   const { facts, customers } = await getSalesData();
   const { topByRevenue, revenueByCountry } = buildCustomerAnalysis(facts, customers);
 
   return (
-    <div>
+    <div className="space-y-8 p-6 bg-gray-50 min-h-screen">
       <PageHeader
-        title="Analisis Pelanggan"
-        description="Pelanggan dan distribusi geografis dengan kontribusi pendapatan tertinggi."
+        title="Analisis & Manajemen Pelanggan"
+        description="Pelanggan, distribusi geografis dengan kontribusi pendapatan tertinggi, dan manajemen data pelanggan penuh."
       />
 
+      {/* Bagian Analitik (Server Rendered) */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card title="10 Pelanggan dengan Pendapatan Tertinggi">
           <RevenueBarChart
@@ -32,7 +34,7 @@ export default async function CustomersPage() {
         </Card>
       </div>
 
-      <div className="mt-6">
+      <div>
         <Card title="10 Pelanggan Teratas — Rincian">
           <DataTable
             rowKey={(row) => row.customerNumber}
@@ -50,6 +52,13 @@ export default async function CustomersPage() {
             ]}
           />
         </Card>
+      </div>
+
+      <hr className="border-gray-200" />
+
+      {/* Bagian Manajemen CRUD (Client Rendered) */}
+      <div>
+        <CustomerManager />
       </div>
     </div>
   );

@@ -34,6 +34,10 @@ WHERE o."officeCode" IS NULL; -- expect 0
 
 -- Row count check -- compare against docs/data-dictionary.md §9 whenever
 -- the dataset is reloaded, to catch a partial/duplicated load early.
+-- These are a FLOOR, not an exact match, once CRUD features write real
+-- rows to this database (customers/, products/, orders/) -- a count going
+-- UP is normal; a count dropping below its migration baseline is the bug
+-- this check exists to catch. See testing/validation/data-quality.test.ts.
 SELECT 'offices' AS t, COUNT(*) FROM "offices"
 UNION ALL SELECT 'employees', COUNT(*) FROM "employees"
 UNION ALL SELECT 'customers', COUNT(*) FROM "customers"
@@ -42,5 +46,5 @@ UNION ALL SELECT 'products', COUNT(*) FROM "products"
 UNION ALL SELECT 'orders', COUNT(*) FROM "orders"
 UNION ALL SELECT 'payments', COUNT(*) FROM "payments"
 UNION ALL SELECT 'orderdetails', COUNT(*) FROM "orderdetails";
--- expect: offices 7, employees 23, customers 122, productlines 7,
+-- expect at least: offices 7, employees 23, customers 122, productlines 7,
 -- products 110, orders 326, payments 273, orderdetails 2996

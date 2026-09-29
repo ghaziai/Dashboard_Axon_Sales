@@ -2,12 +2,16 @@
 
 Dasbor analitik penjualan untuk Axon, yang dibangun menggunakan dataset sampel `classicmodels` dan dikembangkan sebagai latihan DevOps menyeluruh (*end-to-end*): perencanaan, pengembangan, pengujian, integrasi, rilis, deployment, pemantauan, dan umpan balik.
 
-> **Status: Dasbor tahap pertama tersedia.** Database Supabase (`Axon_Sales`)
-> sudah terhubung dan berisi seluruh dataset `classicmodels` hasil migrasi
-> (lihat §5). Tujuh halaman dasbor (Ikhtisar, Analisis Penjualan, Produk,
-> Pelanggan, Karyawan, Kantor, dan Wawasan Lanjutan) berjalan lokal dengan
-> data nyata dari Supabase — lihat `docs/analytics.md` untuk daftar
-> pertanyaan bisnis yang sudah terjawab. Belum di-deploy (lihat §11).
+> **Status: Dasbor tahap pertama live di production.** Database Supabase
+> (`Axon_Sales`) sudah terhubung dan berisi seluruh dataset `classicmodels`
+> hasil migrasi (lihat §5). Tujuh halaman dasbor (Ikhtisar, Analisis
+> Penjualan, Produk, Pelanggan, Karyawan, Kantor, dan Wawasan Lanjutan) live
+> di https://dashboard-axon-sales.vercel.app dengan data nyata dari Supabase
+> — lihat `docs/analytics.md` untuk daftar pertanyaan bisnis yang sudah
+> terjawab. Alur rilis 3-branch (`main → Testing → Deployment`, masing-masing
+> lewat PR + CI, Production Branch Vercel = `Deployment`) sudah aktif penuh
+> — lihat §11 dan `docs/deployment.md`. Toimul Setyo Andri dan Ilham Widi
+> Mahendra sudah diundang sebagai kolaborator repo (menunggu diterima).
 
 ## 1. Gambaran Umum Proyek
 Sebuah dasbor web untuk satu peran, yaitu **Sales** (Penjualan), guna melihat, memfilter, menganalisis, membuat, memperbarui, dan menghapus data penjualan Axon serta mengubah data transaksi mentah menjadi wawasan kinerja terkait pendapatan, produk, pelanggan, karyawan, dan kantor.
@@ -55,9 +59,9 @@ melalui kebijakan Row Level Security pada setiap tabel — dibuka penuh untuk
 "Autentikasi / otorisasi" di `docs/architecture.md`).
 
 ## 6. Instalasi
-Prasyarat: **Node.js** (paket klien Supabase mensyaratkan `>=22`;
-sejauh ini telah dibangun dan diverifikasi menggunakan Node 20.14 — jika Anda mengalami
-masalah saat instalasi atau *runtime*, beralihlah ke Node 22 LTS terlebih dahulu), **npm**, **Git**.
+Prasyarat: **Node.js `>=22`** (lihat `package.json` → `engines`; disyaratkan oleh
+`@supabase/supabase-js`, dan versi yang sama dipakai CI serta Vercel — lihat
+`.github/workflows/ci.yml` dan pengaturan Node Version di Vercel), **npm**, **Git**.
 
 ```bash
 git clone <repository-url>
@@ -87,29 +91,45 @@ mengisinya sendiri dari dashboard proyek Supabase yang sama.
 
 ## 8. Pengembangan Lokal
 ```bash
-npm run dev      # menjalankan server pengembangan di http://localhost:3000
-npm run lint      # ESLint
-npm run build     # build produksi (juga menjalankan pemeriksaan TypeScript)
+npm run dev              # menjalankan server pengembangan di http://localhost:3000
+npm run lint              # ESLint
+npm test                  # Vitest — unit test, offline (lihat §9)
+npm run test:validation   # Vitest — validasi data terhadap Supabase asli (lihat §9)
+npm run build             # build produksi (juga menjalankan pemeriksaan TypeScript)
 ```
 
 ## 9. Pengujian
-Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Belum ada
-pengujian yang dibuat — belum ada aplikasi atau data hasil migrasi untuk diuji.
-Lapisan pengujian, setelah tersedia: `testing/unit/`, `testing/integration/`,
-`testing/validation/`, serta `sql/tests.sql` untuk pemeriksaan kualitas data.
+Strategi didokumentasikan dalam [`docs/testing.md`](docs/testing.md). Lapisan
+**Unit** (Vitest, `npm test`, 52 test) mencakup seluruh fungsi agregasi bisnis
+di `features/*/services/*.ts` dan `lib/format.ts` — murni, tanpa network.
+Lapisan **Validasi data** (`npm run test:validation`, 14 pemeriksaan) adalah
+mirror otomatis dari `sql/tests.sql` (NULL, nilai tidak valid, integritas FK,
+jumlah baris), dijalankan lewat Supabase JS client (anon key) terhadap
+database asli — lihat `docs/testing.md` untuk kenapa ini tidak butuh secret
+database sensitif. Lapisan **Integrasi** (`testing/integration/`) masih *Pending*.
 
 ## 10. CI/CD
-Belum dikonfigurasi. Rencana: GitHub Actions yang menjalankan install → lint → test →
-build saat ada push/PR ke branch `Testing` dan `Deployment` — akan ditambahkan
-setelah ada fitur untuk divalidasi, serta didokumentasikan dalam `docs/deployment.md` saat fitur tersebut siap.
+Dikonfigurasi di [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+`checkout → install (npm ci) → lint → test → build → data validation`,
+berjalan otomatis pada setiap push ke `main`/`Testing`/`Deployment` dan pada
+setiap pull request. Build tidak memerlukan Supabase secrets karena setiap
+route di-render dinamis saat runtime, bukan saat `next build` (sudah
+diverifikasi lokal dengan `.env.local` dihapus sementara sebelum pipeline ini
+ditulis) — tapi step *Data validation* memerlukan `NEXT_PUBLIC_SUPABASE_URL`
+dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`, disuplai lewat GitHub Actions
+**Variables** (bukan Secret, karena nilainya memang publik). Branch
+protection aktif di `main`, `Testing`, dan `Deployment` — wajib lewat PR dan
+status check `validate` lolos sebelum merge (lihat `README_Dev.md`).
 
 ## 11. Deployment
+Model: trunk-based untuk pengembangan (`main` menerima semua PR fitur),
+promosi manual bertahap untuk rilis (`main → Testing → Deployment`, masing-masing
+lewat PR + CI). Production Branch Vercel = `Deployment` (aktif, terverifikasi).
 Lihat [`docs/deployment.md`](docs/deployment.md) dan
-[`deployment/README.md`](deployment/README.md) untuk alur yang direncanakan.
-**Belum di-deploy.**
+[`deployment/README.md`](deployment/README.md) untuk alur lengkap.
 
 ## 12. URL Produksi
-Belum di-deploy.
+https://dashboard-axon-sales.vercel.app
 
 ## 13. Struktur Repositori
 ```
@@ -130,9 +150,11 @@ axon-sales-dashboard/
 ```
 
 ## 14. Pemecahan Masalah (Troubleshooting)
-- **`npm install` menampilkan peringatan terkait engine Node `>=22`**: paket Supabase
-lebih optimal dengan Node 22+; proses instalasi tetap berhasil pada Node 20.14,
-namun beralihlah ke versi lebih baru jika Anda mengalami masalah saat runtime.
+- **`npm install` menampilkan peringatan terkait engine Node `>=22`**: pastikan
+Anda memakai Node `>=22` (lihat `package.json` → `engines`) — di bawah itu,
+`@supabase/supabase-js` dan beberapa nilai format `Intl` (mis. compact currency
+di `lib/format.ts`) bisa berperilaku sedikit berbeda karena versi ICU yang
+dibundel Node ikut berbeda per versi.
 - **Turbopack mendeteksi `package-lock.json` yang tidak relevan dari folder induk**:
 masalah ini sudah diperbaiki melalui `turbopack.root` di `next.config.ts` — jika
 masalah muncul kembali setelah memindahkan repositori, pastikan jalur (path)

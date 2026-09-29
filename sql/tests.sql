@@ -4,6 +4,10 @@
 -- STATUS: Executed against Supabase project flngoumoilywdcozcxom on
 -- 2026-09-17, immediately after running sql/migration.sql. All six
 -- returned 0 -- confirmed, not assumed.
+--
+-- Mirrored as automated checks in testing/validation/data-quality.test.ts
+-- (npm run test:validation), which runs in CI on every push/PR. This file
+-- remains the human-readable reference for the raw SQL.
 
 -- NULL checks on required columns
 SELECT COUNT(*) FROM "orderdetails" WHERE "orderNumber" IS NULL; -- expect 0
